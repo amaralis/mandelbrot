@@ -8,9 +8,22 @@
 </head>
 <body>
     <main>
-        <section>
-            <canvas id="mandelbrot" height="100" width="100"></canvas>
-
+        <section id="canvas-section">
+            <div id="mandelbrot-div">
+                <div id="coords-div">
+                    <p>X: <span id="x-coord-span"></span> Y: <span id="y-coord-span"></span></p>
+                </div>
+                <canvas id="mandelbrot" height="300" width="300"></canvas>
+            </div>
+        </section>
+        <section id="options-section">
+            <form action="#" id="options-form">
+                <div>
+                    <label for="max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
+                </div>
+                <input type="number" name="max-iterations" id="max-iterations" value="100" step="100">
+                <input type="submit" value="Go">
+            </form>
         </section>
 
     </main>

@@ -1,5 +1,9 @@
 import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord } from "./utils/utils.js";
 
+const iterationSelector = document.querySelector("#max-iterations");
+const form = document.querySelector("#options-form");
+form.onsubmit = changeOptions;
+
 export const canvas = document.querySelector("#mandelbrot");
 const ctx = canvas.getContext("2d");
 export const width = canvas.width;
@@ -10,7 +14,7 @@ const pixels = imgData.data;
 
 /* ========================================================== */
 
-let maxIterations = 150; // resolution/accuracy
+export let maxIterations = 100; // resolution/accuracy
 const truePixelCount = pixels.length/4;
 
 export function populate(){
@@ -64,6 +68,15 @@ export function populate(){
             ctx.putImageData(imgData, 0, 0);
         }
     }
+
+    //maxIterations += 1000;
 }
 
 populate();
+
+
+function changeOptions(e){
+    e.preventDefault();
+    maxIterations = parseInt(iterationSelector.value);
+    populate();
+}

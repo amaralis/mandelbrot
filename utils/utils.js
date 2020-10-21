@@ -1,5 +1,8 @@
 import { canvas, width, height, populate } from "../script.js";
-let zoomFactor = 2;
+const xCoordSpan = document.querySelector("#x-coord-span");
+const yCoordSpan = document.querySelector("#y-coord-span");
+
+export let zoomFactor = 8;
 
 // These variables represent the side limits of the canvas: left, right, top, and bottom
 export let initialXLeft = -2.5;
@@ -52,10 +55,8 @@ function zoom(x,y){
     initialYTop = convertedY - topToBottom / 2;
     initialYBottom = convertedY + topToBottom / 2;
 
-    console.log(newXLeft, newXRight, newYTop, newYBottom);
     console.log(x,y,convertedX,convertedY);
     //console.log(sideToSide, topToBottom);
-
     populate();
     // console.log(convertedX, convertedY, xDiff, yDiff);
 }
@@ -64,13 +65,25 @@ window.onload = () => {
     canvas.addEventListener("click", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.clientY - canvas.offsetTop;
-
-        zoom(xCoord, yCoord);
-
-        // let x = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
-        // let y = getValueInNewRange(yCoord, 0, height, initialYTop, initialYBottom);
         
-        // console.log(getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight)
-        // , getValueInNewRange(yCoord, 0, height, initialYTop, initialYBottom));
+        zoom(xCoord, yCoord);
     })
+
+    canvas.addEventListener("mousemove", e => {
+        let xCoord = e.clientX - canvas.offsetLeft;
+        let yCoord = e.clientY - canvas.offsetTop;
+
+        let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
+        let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
+
+        xCoordSpan.textContent = `${newX}`;
+        yCoordSpan.textContent = `${newY}`;
+    })
+
+    // document.addEventListener("keyup", e => {
+    //     let desiredOffset = (initialXRight - initialXLeft) * 0.4;
+
+    //     initialXLeft -= desiredOffset;
+    //     initialXRight
+    // })
 }
