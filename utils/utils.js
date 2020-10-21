@@ -1,4 +1,4 @@
-import { canvas, width, height, populate } from "../script.js";
+import { canvas, width, height, workers/*, populate*/ } from "../script.js";
 const xCoordSpan = document.querySelector("#x-coord-span");
 const yCoordSpan = document.querySelector("#y-coord-span");
 
@@ -79,11 +79,8 @@ window.onload = () => {
         xCoordSpan.textContent = `${newX}`;
         yCoordSpan.textContent = `${newY}`;
     })
+}
 
-    // document.addEventListener("keyup", e => {
-    //     let desiredOffset = (initialXRight - initialXLeft) * 0.4;
-
-    //     initialXLeft -= desiredOffset;
-    //     initialXRight
-    // })
+export function createWorker(file){
+    workers.push(new Worker(file));
 }
