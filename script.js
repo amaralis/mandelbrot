@@ -1,5 +1,8 @@
 import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord } from "./utils/utils.js";
 
+const numWorkers = [navigator.hardwareConcurrency];
+console.log(numWorkers);
+
 const iterationSelector = document.querySelector("#max-iterations");
 const form = document.querySelector("#options-form");
 form.onsubmit = changeOptions;
