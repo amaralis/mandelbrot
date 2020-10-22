@@ -1,22 +1,29 @@
 self.onmessage = e => {
-    console.log(e.data.data);
-    let imgData = e.data;
-    // const res = {data: e.data.numPixels/2};
-    // self.postMessage(res, res.data.buffer);
+    console.log(e.data.data); 
 
-    // function populate(){
+        let imgData = e.data;
+        // const res = {data: e.data.numPixels/2};
+        // self.postMessage(res, res.data.buffer);
+    
+        // function populate(){
+    
+            for(let i=0; i<imgData.data.length; i+=4){ // set/reset all rgba values in canvas
+                imgData.data[i] = 255;
+                imgData.data[i+1] = 0;
+                imgData.data[i+2] = 0;
+                imgData.data[i+3] = 255;
+            }
+            for(let i=0; i<5; i+=4){ // set/reset all rgba values in canvas
+                imgData.data[i] = 001;
+                imgData.data[i+1] = 002;
+                imgData.data[i+2] = 003;
+                imgData.data[i+3] = 255;
+            }
+    
+    
+    
+            self.postMessage(imgData, [imgData.data.buffer]);
 
-        for(let i=0; i<imgData.data.length; i+=4){ // set/reset all rgba values in canvas
-            imgData.data[i] = 255;
-            imgData.data[i+1] = 0;
-            imgData.data[i+2] = 0;
-            imgData.data[i+3] = 255;
-        }
-
-
-
-        self.postMessage(imgData, [imgData.data.buffer]);
-        
     //     ctx.putImageData(imgData, 0, 0);
         
     

@@ -19,20 +19,7 @@ const truePixelCount = pixels.length/4;
 
 // ===================================================================================
 
-    // This was a dummy image data object, red canvas with a green strip
-    // for(let i=0; i<newImgData.data.length; i+=4){ // set all rgba values in canvas
-    //     newImgData.data[i] = 255;
-    //     newImgData.data[i+1] = 0;
-    //     newImgData.data[i+2] = 0;
-    //     newImgData.data[i+3] = 255;
-    // }
-    // for(let i=50000; i<80000; i+=4){ // set all rgba values in canvas
-    //     newImgData.data[i] = 0;
-    //     newImgData.data[i+1] = 255;
-    //     newImgData.data[i+2] = 0;
-    //     newImgData.data[i+3] = 255;
-    // }
-    // console.log(newImgData.data.length/numWorkers, numWorkers);
+    
 
 
 
@@ -54,11 +41,26 @@ if(window.Worker){
     // myWorker.postMessage(imgData, [imgData.data.buffer]);
     // myWorker.onmessage = e => {
     //     console.log(e.data);
-        let newArr = new Uint8ClampedArray([...pixels]);
-    //     console.log(newArr);
+        let newArr = new Uint8ClampedArray([...imgData.data]);
         let newImgData = new ImageData(newArr, width, height);
     //     ctx.putImageData(newImgData, 0, 0);
     // }
+
+    // This was a dummy image data object, red canvas with a green strip
+    // for(let i=0; i<newImgData.data.length; i+=4){ // set all rgba values in canvas
+    //     newImgData.data[i] = 255;
+    //     newImgData.data[i+1] = 0;
+    //     newImgData.data[i+2] = 0;
+    //     newImgData.data[i+3] = 255;
+    // }
+    // for(let i=50000; i<130000; i+=4){ // set all rgba values in canvas
+    //     newImgData.data[i] = 150;
+    //     newImgData.data[i+1] = 150;
+    //     newImgData.data[i+2] = 150;
+    //     newImgData.data[i+3] = 255;
+    // }
+    // console.log(newImgData.data.length/numWorkers, numWorkers);
+
 
     let imgDataChunkArr = [];
     let sliceSize = imgData.data.length/numWorkers;
@@ -70,10 +72,23 @@ if(window.Worker){
     // Afterwards, merge them into one uint8 typed array, to build a new image data object with
     for(let i = 0; i < numWorkers; i++){
         imgDataChunkArr[i] = imgData.data.slice(sliceFrom, sliceTo);
+        let tempImgData = new ImageData(imgDataChunkArr[i], width);
+
+        // Don't mix up the chunks in the image data chunk array!
+        workers[i].postMessage(tempImgData, [tempImgData.data.buffer]);
+        workers[i].onmessage = res => {
+            console.log(res);
+            imgDataChunkArr[i] = res.data.data;
+            console.log("New chunk array:", imgDataChunkArr);
+        }
+
         sliceFrom = sliceTo;
         sliceTo += sliceSize;
-        console.log(imgDataChunkArr);
+        
+        
     }
+
+
 
     // let arr1 = newImgData.data.slice(sliceFrom, sliceTo);
     // sliceFrom = sliceTo;
@@ -101,23 +116,23 @@ if(window.Worker){
     // console.log(arr3);
     // console.log(arr4);
     // console.log(arr5);
-    console.log(imgDataChunkArr);
+    // console.log(imgDataChunkArr);
 
     let newImgDataArr = new Uint8ClampedArray(newImgData.data.length);
-    console.log(newImgDataArr);
+    // console.log(newImgDataArr);
 
     let numArraysPushed = 0;
 
-    for(let i = 0; i < imgDataChunkArr.length; i++) {
-        newImgDataArr.set(imgDataChunkArr[i], sliceSize*numArraysPushed);
-        numArraysPushed++;
-    }
+    // for(let i = 0; i < imgDataChunkArr.length; i++) {
+    //     newImgDataArr.set(imgDataChunkArr[i], sliceSize*numArraysPushed);
+    //     numArraysPushed++;
+    // }
 
     numArraysPushed = 0;
-    console.log(newImgDataArr);
+    // console.log(newImgDataArr);
     let testNewImageData = new ImageData(newImgDataArr, width, height);
     // ctx.putImageData(newImgData, 0, 0); // Dummy image data
-    ctx.putImageData(testNewImageData, 0, 0);
+    // ctx.putImageData(testNewImageData, 0, 0);
 
 
 
