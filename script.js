@@ -19,41 +19,13 @@ const truePixelCount = pixels.length/4;
 
 // ===================================================================================
 
-    // This was a dummy image data object, red canvas with a green strip
-    let testImgData = ctx.getImageData(0, 0, width, height);
-    for(let i=0; i<testImgData.data.length; i+=4){ // set all rgba values in canvas
-        testImgData.data[i] = 255;
-        testImgData.data[i+1] = 0;
-        testImgData.data[i+2] = 0;
-        testImgData.data[i+3] = 255;
-    }
-    for(let i=50000; i<130000; i+=4){ // set all rgba values in canvas
-        testImgData.data[i] = 150;
-        testImgData.data[i+1] = 150;
-        testImgData.data[i+2] = 150;
-        testImgData.data[i+3] = 255;
-    }
-
-    ctx.putImageData(testImgData, 0, 0);
-
-// let arr1 = [1,2,3,4];
-// let arr2 = [1,2,3,4];
-// let arr3 = [1,2,3,4];
-// let arr4 = [...arr1, ...arr2, ...arr3];
-// console.log(arr4);
-// let arr5 = Uint8ClampedArray.from(arr4);
-// console.log(arr5);
-// let testImgDat = new ImageData(arr5, 3);
-// console.log(testImgDat);
-
 export let workers = [];
 
 if(window.Worker){
     populate();
 }
 
-export function populate(){
-    
+export function populate(){    
     // One logical core is going to have the main thread running in it, right? Yup...
     const numWorkers = navigator.hardwareConcurrency - 1;
     // const numWorkers = 1;
