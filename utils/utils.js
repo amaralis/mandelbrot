@@ -1,14 +1,14 @@
-import { canvas, width, height, workers, initialXLeft, initialXRight, initialYTop, initialYBottom} from "../script.js";
+import { canvas, width, height, workers, populate } from "../script.js";
 const xCoordSpan = document.querySelector("#x-coord-span");
 const yCoordSpan = document.querySelector("#y-coord-span");
 
 export let zoomFactor = 8;
 
-// // These variables represent the side limits of the canvas: left, right, top, and bottom
-// export let initialXLeft = -2.5;
-// export let initialXRight = 1.5;
-// export let initialYTop = -2;
-// export let initialYBottom = 2;
+// These variables represent the side limits of the canvas: left, right, top, and bottom
+export let initialXLeft = -2.5;
+export let initialXRight = 1.5;
+export let initialYTop = -2;
+export let initialYBottom = 2;
 
 // The new edges will vary with zoom level
 export let newXLeft;
@@ -42,7 +42,7 @@ export function getIndexFromCoord(x, y) {
     return (y * width + x) - 1;
 }
 
-function zoom(x,y){
+export function zoom(x,y){
     let convertedX = getValueInNewRange(x, 0, width, initialXLeft, initialXRight);
     let convertedY = getValueInNewRange(y, 0, height, initialYTop, initialYBottom);
 
@@ -61,6 +61,7 @@ function zoom(x,y){
     // console.log(convertedX, convertedY, xDiff, yDiff);
 }
 
+
 window.onload = () => {    
     canvas.addEventListener("click", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
@@ -68,7 +69,7 @@ window.onload = () => {
         
         zoom(xCoord, yCoord);
     })
-
+    
     canvas.addEventListener("mousemove", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.clientY - canvas.offsetTop;

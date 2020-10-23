@@ -1,4 +1,4 @@
-import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord, createWorker } from "./utils/utils.js";
+import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
 
 const iterationSelector = document.querySelector("#max-iterations");
 const form = document.querySelector("#options-form");
@@ -8,12 +8,6 @@ export const canvas = document.querySelector("#mandelbrot");
 const ctx = canvas.getContext("2d");
 export const width = canvas.width;
 export const height = canvas.height;
-
-// These variables represent the side limits of the canvas: left, right, top, and bottom
-export let initialXLeft = -2.5;
-export let initialXRight = 1.5;
-export let initialYTop = -2;
-export let initialYBottom = 2;
 
 let imgData = ctx.getImageData(0, 0, width, height); // ImageData object is an ARRAYBUFFER object
 let pixels = imgData.data;
@@ -55,9 +49,14 @@ const truePixelCount = pixels.length/4;
 export let workers = [];
 
 if(window.Worker){
+    populate();
+}
+
+export function populate(){
+    
     // One logical core is going to have the main thread running in it, right? Yup...
-    // const numWorkers = navigator.hardwareConcurrency - 1;
-    const numWorkers = 4;
+    const numWorkers = navigator.hardwareConcurrency - 1;
+    // const numWorkers = 1;
     let workIterator = 0;
     let numResponses = 0;
 

@@ -2,7 +2,7 @@
 
 self.onmessage = e => {
     let {indexStart, sliceSize, width, maxIterations, initialXLeft, initialXRight, initialYTop, initialYBottom} = e.data.messageObj;
-    console.log(indexStart, sliceSize, width);
+    console.log(maxIterations);
     let imgDataArr = new Uint8ClampedArray(sliceSize*4);
 
     // for(let i=0; i<imgDataArr.length; i+=4){
@@ -17,8 +17,7 @@ self.onmessage = e => {
     //     imgDataArr[i+2] = 0;
     //     imgDataArr[i+3] = 255;
     // }
-
-
+    
     populate(imgDataArr, indexStart);
 
     function populate(arr, startingIndex) {
@@ -55,12 +54,14 @@ self.onmessage = e => {
             let lightness = getValueInNewRange(iterations, 0, maxIterations, 0, 255);
         
             if(iterations >= maxIterations){
-                lightness = 0;
+                arr[i*4] = 0;
+                arr[i*4+1] = 0;
+                arr[i*4+2] = 0;
+                arr[i*4+3] = 255;
             } else {
-                if(i===0){
-                    console.log("Setting pixel values");
-                    console.log(coords.xOriginal, coords.yOriginal);
-                }
+                // if(i===0){
+                //     console.log("Setting pixel values");
+                // }
 
                 // i is already divided by four, so we need to multiply again, to get only the red index in the image data array
                 arr[i*4] = lightness;
