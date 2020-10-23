@@ -1,14 +1,14 @@
-import { canvas, width, height, workers/*, populate*/ } from "../script.js";
+import { canvas, width, height, workers, initialXLeft, initialXRight, initialYTop, initialYBottom} from "../script.js";
 const xCoordSpan = document.querySelector("#x-coord-span");
 const yCoordSpan = document.querySelector("#y-coord-span");
 
 export let zoomFactor = 8;
 
-// These variables represent the side limits of the canvas: left, right, top, and bottom
-export let initialXLeft = -2.5;
-export let initialXRight = 1.5;
-export let initialYTop = -2;
-export let initialYBottom = 2;
+// // These variables represent the side limits of the canvas: left, right, top, and bottom
+// export let initialXLeft = -2.5;
+// export let initialXRight = 1.5;
+// export let initialYTop = -2;
+// export let initialYBottom = 2;
 
 // The new edges will vary with zoom level
 export let newXLeft;
@@ -76,8 +76,8 @@ window.onload = () => {
         let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
         let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
 
-        xCoordSpan.textContent = `${newX}`;
-        yCoordSpan.textContent = `${newY}`;
+        xCoordSpan.textContent = `${newX}, ${xCoord}`;
+        yCoordSpan.textContent = `${newY}, ${yCoord}`;
     })
 }
 

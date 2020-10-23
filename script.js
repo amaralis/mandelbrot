@@ -9,6 +9,12 @@ const ctx = canvas.getContext("2d");
 export const width = canvas.width;
 export const height = canvas.height;
 
+// These variables represent the side limits of the canvas: left, right, top, and bottom
+export let initialXLeft = -2.5;
+export let initialXRight = 1.5;
+export let initialYTop = -2;
+export let initialYBottom = 2;
+
 let imgData = ctx.getImageData(0, 0, width, height); // ImageData object is an ARRAYBUFFER object
 let pixels = imgData.data;
 
@@ -19,132 +25,86 @@ const truePixelCount = pixels.length/4;
 
 // ===================================================================================
 
-    
+    // This was a dummy image data object, red canvas with a green strip
+    let testImgData = ctx.getImageData(0, 0, width, height);
+    for(let i=0; i<testImgData.data.length; i+=4){ // set all rgba values in canvas
+        testImgData.data[i] = 255;
+        testImgData.data[i+1] = 0;
+        testImgData.data[i+2] = 0;
+        testImgData.data[i+3] = 255;
+    }
+    for(let i=50000; i<130000; i+=4){ // set all rgba values in canvas
+        testImgData.data[i] = 150;
+        testImgData.data[i+1] = 150;
+        testImgData.data[i+2] = 150;
+        testImgData.data[i+3] = 255;
+    }
 
+    ctx.putImageData(testImgData, 0, 0);
 
-
+// let arr1 = [1,2,3,4];
+// let arr2 = [1,2,3,4];
+// let arr3 = [1,2,3,4];
+// let arr4 = [...arr1, ...arr2, ...arr3];
+// console.log(arr4);
+// let arr5 = Uint8ClampedArray.from(arr4);
+// console.log(arr5);
+// let testImgDat = new ImageData(arr5, 3);
+// console.log(testImgDat);
 
 export let workers = [];
 
 if(window.Worker){
-    // One logical core is going to have the main thread running in it, right?
-    const numWorkers = navigator.hardwareConcurrency - 1;
+    // One logical core is going to have the main thread running in it, right? Yup...
+    // const numWorkers = navigator.hardwareConcurrency - 1;
+    const numWorkers = 4;
     let workIterator = 0;
+    let numResponses = 0;
 
     while(workIterator !== numWorkers){
         createWorker("workers/pixelCruncher.js");
         workIterator++;
     }
-    workIterator = 0;
 
-    // const myWorker = new Worker("workers/pixelCruncher.js");
-    // myWorker.postMessage(imgData, [imgData.data.buffer]);
-    // myWorker.onmessage = e => {
-    //     console.log(e.data);
-        let newArr = new Uint8ClampedArray([...imgData.data]);
-        let newImgData = new ImageData(newArr, width, height);
-    //     ctx.putImageData(newImgData, 0, 0);
-    // }
+    let imgDataChunkArr = new Array(numWorkers);
+    let sliceSize = truePixelCount / numWorkers;
 
-    // This was a dummy image data object, red canvas with a green strip
-    // for(let i=0; i<newImgData.data.length; i+=4){ // set all rgba values in canvas
-    //     newImgData.data[i] = 255;
-    //     newImgData.data[i+1] = 0;
-    //     newImgData.data[i+2] = 0;
-    //     newImgData.data[i+3] = 255;
-    // }
-    // for(let i=50000; i<130000; i+=4){ // set all rgba values in canvas
-    //     newImgData.data[i] = 150;
-    //     newImgData.data[i+1] = 150;
-    //     newImgData.data[i+2] = 150;
-    //     newImgData.data[i+3] = 255;
-    // }
-    // console.log(newImgData.data.length/numWorkers, numWorkers);
-
-
-    let imgDataChunkArr = [];
-    let sliceSize = imgData.data.length/numWorkers;
-    let sliceFrom = 0;
-    let sliceTo = sliceSize;
+    let newImgDataArr = new Uint8ClampedArray(sliceSize*4*numWorkers);
 
     // Populate image data chunk array with as many uint8 arrays (sliced off our image data) as there are workers
     // Ship them off to their respective workers
     // Afterwards, merge them into one uint8 typed array, to build a new image data object with
     for(let i = 0; i < numWorkers; i++){
-        imgDataChunkArr[i] = imgData.data.slice(sliceFrom, sliceTo);
-        let tempImgData = new ImageData(imgDataChunkArr[i], width);
+        let indexStart = sliceSize*i;
+        let messageObj = {
+            indexStart,
+            sliceSize,
+            width,
+            maxIterations,
+            initialXLeft,
+            initialXRight,
+            initialYTop,
+            initialYBottom
+        };
 
         // Don't mix up the chunks in the image data chunk array!
-        workers[i].postMessage(tempImgData, [tempImgData.data.buffer]);
+        workers[i].postMessage({messageObj});
         workers[i].onmessage = res => {
-            console.log(res);
-            imgDataChunkArr[i] = res.data.data;
-            console.log("New chunk array:", imgDataChunkArr);
+            numResponses++;
+            console.log(res.data);
+            imgDataChunkArr[i] = res.data;
+            //console.log(imgDataChunkArr);
+            newImgDataArr.set(res.data, sliceSize*4*i);
+            // console.log(newImgDataArr.length);
+            //console.log(newImgDataArr);
+            if(numResponses === numWorkers){
+                console.log("All workers responded");
+                let newImgData = new ImageData(newImgDataArr, width);
+                console.log(newImgData);
+                ctx.putImageData(newImgData, 0, 0);
+            }
         }
-
-        sliceFrom = sliceTo;
-        sliceTo += sliceSize;
-        
-        
     }
-
-
-
-    // let arr1 = newImgData.data.slice(sliceFrom, sliceTo);
-    // sliceFrom = sliceTo;
-    // sliceTo = sliceFrom + sliceSize;
-    // imgDataChunkArr.push(arr1);
-    // let arr2 = newImgData.data.slice(sliceFrom, sliceTo);
-    // sliceFrom = sliceTo;
-    // sliceTo = sliceFrom + sliceSize;
-    // imgDataChunkArr.push(arr2);
-    // let arr3 = newImgData.data.slice(sliceFrom, sliceTo);
-    // sliceFrom = sliceTo;
-    // sliceTo = sliceFrom + sliceSize;
-    // imgDataChunkArr.push(arr3);
-    // let arr4 = newImgData.data.slice(sliceFrom, sliceTo);
-    // sliceFrom = sliceTo;
-    // sliceTo = sliceFrom + sliceSize;
-    // imgDataChunkArr.push(arr4);
-    // let arr5 = newImgData.data.slice(sliceFrom, sliceTo);
-    // sliceFrom = sliceTo;
-    // sliceTo = sliceFrom + sliceSize;
-    // imgDataChunkArr.push(arr5);
-
-    // console.log(arr1);
-    // console.log(arr2);
-    // console.log(arr3);
-    // console.log(arr4);
-    // console.log(arr5);
-    // console.log(imgDataChunkArr);
-
-    let newImgDataArr = new Uint8ClampedArray(newImgData.data.length);
-    // console.log(newImgDataArr);
-
-    let numArraysPushed = 0;
-
-    // for(let i = 0; i < imgDataChunkArr.length; i++) {
-    //     newImgDataArr.set(imgDataChunkArr[i], sliceSize*numArraysPushed);
-    //     numArraysPushed++;
-    // }
-
-    numArraysPushed = 0;
-    // console.log(newImgDataArr);
-    let testNewImageData = new ImageData(newImgDataArr, width, height);
-    // ctx.putImageData(newImgData, 0, 0); // Dummy image data
-    // ctx.putImageData(testNewImageData, 0, 0);
-
-
-
-    
-    // let test1 = "test";
-    // for(let i = 0; i < numWorkers; i++){
-    //     createWorker("workers/pixelCruncher.js");
-    //     workers[i].postMessage([test1]);
-    // }
-
-    //console.log(workers);
-
 }
 
 // ===================================================================================
