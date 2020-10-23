@@ -64,15 +64,15 @@ export function populate(){
             numResponses++;
             console.log(res.data);
             imgDataChunkArr[i] = res.data;
-            //console.log(imgDataChunkArr);
             newImgDataArr.set(res.data, sliceSize*4*i);
-            // console.log(newImgDataArr.length);
-            //console.log(newImgDataArr);
+
             if(numResponses === numWorkers){
                 console.log("All workers responded");
                 let newImgData = new ImageData(newImgDataArr, width);
                 console.log(newImgData);
                 ctx.putImageData(newImgData, 0, 0);
+
+                
             }
         }
     }

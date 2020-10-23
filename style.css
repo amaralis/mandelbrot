@@ -10,13 +10,13 @@ body {
 }
 
 #canvas-section {
-  margin: 10vh;
+  margin: 2vh;
   display: flex;
   justify-content: center;
 }
 
 #options-section {
-  margin: 10vh;
+  margin: 2vh;
   display: flex;
   justify-content: center;
 }

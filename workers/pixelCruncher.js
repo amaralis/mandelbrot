@@ -59,10 +59,6 @@ self.onmessage = e => {
                 arr[i*4+2] = 0;
                 arr[i*4+3] = 255;
             } else {
-                // if(i===0){
-                //     console.log("Setting pixel values");
-                // }
-
                 // i is already divided by four, so we need to multiply again, to get only the red index in the image data array
                 arr[i*4] = lightness;
                 arr[i*4+1] = lightness-60;
