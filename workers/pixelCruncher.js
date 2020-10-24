@@ -2,8 +2,7 @@
 
 self.onmessage = e => {
     let {indexStart, sliceSize, width, maxIterations, initialXLeft, initialXRight, initialYTop, initialYBottom} = e.data.messageObj;
-    console.log(maxIterations);
-    let imgDataArr = new Uint8ClampedArray(sliceSize*4);
+    let imgDataArr = new Array(sliceSize);
 
     // for(let i=0; i<imgDataArr.length; i+=4){
     //     imgDataArr[i] = 0;
@@ -51,19 +50,17 @@ self.onmessage = e => {
                 iterations++;
             }
         
-            let lightness = getValueInNewRange(iterations, 0, maxIterations, 0, 255);
+            let hue = getValueInNewRange(iterations, 0, maxIterations, 0, 360);
         
             if(iterations >= maxIterations){
-                arr[i*4] = 0;
-                arr[i*4+1] = 0;
-                arr[i*4+2] = 0;
-                arr[i*4+3] = 255;
+                arr[i] = 0;
             } else {
+
                 // i is already divided by four, so we need to multiply again, to get only the red index in the image data array
-                arr[i*4] = lightness;
-                arr[i*4+1] = lightness-60;
-                arr[i*4+2] = lightness+60;
-                arr[i*4+3] = 255;
+                // arr[i*4] = lightness;
+                // arr[i*4+1] = lightness-60;
+                // arr[i*4+2] = lightness+60;
+                arr[i] = hue;
             }
         }
     }

@@ -40,7 +40,8 @@ export function populate(){
     let imgDataChunkArr = new Array(numWorkers);
     let sliceSize = truePixelCount / numWorkers;
 
-    let newImgDataArr = new Uint8ClampedArray(sliceSize*4*numWorkers);
+    let newImgDataArr = [];
+    //console.log(newImgDataArr)
 
     // Populate image data chunk array with as many uint8 arrays (sliced off our image data) as there are workers
     // Ship them off to their respective workers
@@ -64,13 +65,39 @@ export function populate(){
             numResponses++;
             console.log(res.data);
             imgDataChunkArr[i] = res.data;
-            newImgDataArr.set(res.data, sliceSize*4*i);
+            console.log(imgDataChunkArr);
+            //newImgDataArr.set(res.data, sliceSize*4*i);
 
             if(numResponses === numWorkers){
                 console.log("All workers responded");
-                let newImgData = new ImageData(newImgDataArr, width);
-                console.log(newImgData);
-                ctx.putImageData(newImgData, 0, 0);
+                //let newImgData = new ImageData(newImgDataArr, width);
+                for(let i=0; i<imgDataChunkArr.length; i++){
+                    newImgDataArr = [...newImgDataArr, ...imgDataChunkArr[i]];
+                    console.log(newImgDataArr);
+                }    
+                console.log(newImgDataArr);
+
+                for(let rows = 0; rows < height; rows++){
+                    for(let cols = 0; cols < width; cols++){
+                        // if(rows === 0 && cols === 599){
+                        //     console.log(getIndexFromCoord(cols, rows));
+                        // }
+                        let index = getIndexFromCoord(cols, rows);
+                        let hue = Math.round(newImgDataArr[index]) + 180; // Choose colors with hue angle here
+
+                        if(hue - 180 === 0){ // Compensate selected hue angle here, to color numbers in the set black
+                            ctx.fillStyle = `hsl(${hue}, 50%, 0%)`;
+                            ctx.fillRect(cols, rows, 1, 1);
+                        } else {
+                            ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                            //ctx.clearRect(rows, cols, 1, 1);
+                            ctx.fillRect(cols, rows, 1, 1);
+                        }
+                    }
+
+                }
+
+                //ctx.putImageData(newImgData, 0, 0);
 
                 
             }

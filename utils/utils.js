@@ -39,7 +39,7 @@ export function getCoordFromIndex(index) { // From full image data index / 4, or
 }
 
 export function getIndexFromCoord(x, y) {
-    return (y * width + x) - 1;
+    return (y * width + x);
 }
 
 export function zoom(x,y){
