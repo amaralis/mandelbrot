@@ -10,18 +10,52 @@
         <main>
             <section id="canvas-section">
                 <div id="mandelbrot-div">
-                    <div id="coords-div">
+                    <div id="mandelbrot-coords-div">
                         <p>X: <span id="x-coord-span"></span> Y: <span id="y-coord-span"></span></p>
                     </div>
                     <canvas id="mandelbrot" height="600" width="600"></canvas>
                 </div>
+                <div class="julia-div">
+                    <div id="mandelbrot-coords-div">
+                        <p>X: <span id="x-coord-span"></span> Y: <span id="y-coord-span"></span></p>
+                    </div>
+                    <canvas id="julia" height="600" width="600"></canvas>
+                </div>
             </section>
             <section id="options-section">
-                <form action="#" id="options-form">
+                <form action="#" id="mandelbrot-options-form">
                     <div>
-                        <label for="max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
+                        <label for="mandelbrot-max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
                     </div>
-                    <input type="number" name="max-iterations" id="max-iterations" value="100" step="100">
+                    <div>
+                        <input type="number" name="mandelbrot-max-iterations" id="mandelbrot-max-iterations" value="100" step="100">
+                    </div>
+
+                    <div>
+                        <label for="mandelbrot-hue-multiplier">Crank multiplier up for more rainbow. Tone it down for sad and drab.</label>
+                    </div>
+                    <div>                        
+                        <input type="number" name="mandelbrot-hue-multiplier" id="mandelbrot-hue-multiplier" value="1" step="1">
+                    </div>
+
+                    <div>
+                        <label for="mandelbrot-hue-shift">Drag slider to shift the color around. Good for when you want better contrast.</label>
+                    </div>
+                    <div>
+                        <input type="range" name="mandelbrot-hue-shift" id="mandelbrot-hue-shift" min="0" max="360" step="1" value="1">
+                    </div>
+
+                        <label for="mandelbrot-saturation">Drag slider to change saturation %</label>
+                    </div>
+                    <div>
+                        <input type="range" name="mandelbrot-saturation" id="mandelbrot-saturation" min="0" max="100" step="1" value="100">
+                    </div>
+
+                        <label for="mandelbrot-lightness">Drag slider to change lightness %</label>
+                    </div>
+                    <div>
+                        <input type="range" name="mandelbrot-lightness" id="mandelbrot-lightness" min="0" max="100" step="1" value="50">
+                    </div>
                     <input type="submit" value="Go">
                 </form>
             </section>

@@ -1,7 +1,11 @@
 import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
 
-const iterationSelector = document.querySelector("#max-iterations");
-const form = document.querySelector("#options-form");
+const iterationSelector = document.querySelector("#mandelbrot-max-iterations");
+const colorRangeSelector = document.querySelector("#mandelbrot-hue-multiplier");
+const hueShiftSelector = document.querySelector("#mandelbrot-hue-shift");
+const saturationSelector = document.querySelector("#mandelbrot-saturation");
+const lightnessSelector = document.querySelector("#mandelbrot-lightness");
+const form = document.querySelector("#mandelbrot-options-form");
 form.onsubmit = changeOptions;
 
 export const canvas = document.querySelector("#mandelbrot");
@@ -15,6 +19,10 @@ let pixels = imgData.data;
 /* ========================================================== */
 
 export let maxIterations = 100; // resolution/accuracy
+export let colorMultiplier = 1; // number of times hue can turn around the color wheel
+export let hueShift = 0; // original hue angle on the wheel
+export let saturation = 50;
+export let lightness = 50;
 const truePixelCount = pixels.length/4;
 
 // ===================================================================================
@@ -28,7 +36,6 @@ if(window.Worker){
 export function populate(){    
     // One logical core is going to have the main thread running in it, right? Yup...
     const numWorkers = navigator.hardwareConcurrency - 1;
-    // const numWorkers = 1;
     let workIterator = 0;
     let numResponses = 0;
 
@@ -41,11 +48,7 @@ export function populate(){
     let sliceSize = truePixelCount / numWorkers;
 
     let newImgDataArr = [];
-    //console.log(newImgDataArr)
 
-    // Populate image data chunk array with as many uint8 arrays (sliced off our image data) as there are workers
-    // Ship them off to their respective workers
-    // Afterwards, merge them into one uint8 typed array, to build a new image data object with
     for(let i = 0; i < numWorkers; i++){
         let indexStart = sliceSize*i;
         let messageObj = {
@@ -53,6 +56,7 @@ export function populate(){
             sliceSize,
             width,
             maxIterations,
+            colorMultiplier,
             initialXLeft,
             initialXRight,
             initialYTop,
@@ -83,23 +87,18 @@ export function populate(){
                         //     console.log(getIndexFromCoord(cols, rows));
                         // }
                         let index = getIndexFromCoord(cols, rows);
-                        let hue = Math.round(newImgDataArr[index]) + 180; // Choose colors with hue angle here
+                        let hue = Math.round(newImgDataArr[index]);
 
-                        if(hue - 180 === 0){ // Compensate selected hue angle here, to color numbers in the set black
-                            ctx.fillStyle = `hsl(${hue}, 50%, 0%)`;
+                        if(hue === 0){
+                            ctx.fillStyle = `black`;
                             ctx.fillRect(cols, rows, 1, 1);
                         } else {
-                            ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                            ctx.fillStyle = `hsl(${hue+hueShift}, ${saturation}%, ${lightness}%)`;
                             //ctx.clearRect(rows, cols, 1, 1);
                             ctx.fillRect(cols, rows, 1, 1);
                         }
                     }
-
                 }
-
-                //ctx.putImageData(newImgData, 0, 0);
-
-                
             }
         }
     }
@@ -170,5 +169,9 @@ export function populate(){
 function changeOptions(e){
     e.preventDefault();
     maxIterations = parseInt(iterationSelector.value);
+    colorMultiplier = parseInt(colorRangeSelector.value);
+    hueShift = parseInt(hueShiftSelector.value);
+    saturation = parseInt(saturationSelector.value);
+    lightness = parseInt(lightnessSelector.value);
     populate();
 }

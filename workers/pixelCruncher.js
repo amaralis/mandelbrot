@@ -1,7 +1,7 @@
 // module import still seems iffy for firefox; copy-pasting stuff from utils for safety
 
 self.onmessage = e => {
-    let {indexStart, sliceSize, width, maxIterations, initialXLeft, initialXRight, initialYTop, initialYBottom} = e.data.messageObj;
+    let {indexStart, sliceSize, width, maxIterations, colorMultiplier, initialXLeft, initialXRight, initialYTop, initialYBottom} = e.data.messageObj;
     let imgDataArr = new Array(sliceSize);
 
     // for(let i=0; i<imgDataArr.length; i+=4){
@@ -50,7 +50,14 @@ self.onmessage = e => {
                 iterations++;
             }
         
-            let hue = getValueInNewRange(iterations, 0, maxIterations, 0, 360);
+            /**
+             *let hue = getValueInNewRange(iterations, 0, maxIterations, -180*(maxIterations/100), 180*(maxIterations/100)); 
+             * 
+             * This makes it more colorful, although it's arguable if it's prettier. It allows the hue angle to go beyond 0-360,
+             * repeating hues as iterations fluctuate between 0 and max
+             */
+            
+            let hue = getValueInNewRange(iterations, 0, maxIterations, 180, 360*colorMultiplier); // Reduce hue range for less colors
         
             if(iterations >= maxIterations){
                 arr[i] = 0;
