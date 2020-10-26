@@ -23,41 +23,85 @@
                 </div>
             </section>
             <section id="options-section">
-                <form action="#" id="mandelbrot-options-form">
-                    <div>
-                        <label for="mandelbrot-max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
-                    </div>
-                    <div>
-                        <input type="number" name="mandelbrot-max-iterations" id="mandelbrot-max-iterations" value="100" step="100">
-                    </div>
+                <div>
+                    <form action="#" id="mandelbrot-options-form">
+                        <div>
+                            <label for="mandelbrot-max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
+                        </div>
+                        <div>
+                            <input type="number" name="mandelbrot-max-iterations" id="mandelbrot-max-iterations" value="100" step="100">
+                        </div>
+    
+                        <div>
+                            <label for="mandelbrot-hue-multiplier">Crank multiplier up for more rainbow. Tone it down for sad and drab.</label>
+                        </div>
+                        <div>                        
+                            <input type="number" name="mandelbrot-hue-multiplier" id="mandelbrot-hue-multiplier" value="1" step="1">
+                        </div>
+    
+                        <div>
+                            <label for="mandelbrot-hue-shift">Drag slider to shift the color around. Good for when you want better contrast.</label>
+                        </div>
+                        <div>
+                            <input type="range" name="mandelbrot-hue-shift" id="mandelbrot-hue-shift" min="0" max="360" step="1" value="1">
+                        </div>
+                        <div>
+                            <label for="mandelbrot-saturation">Drag slider to change saturation %</label>
+                        </div>
+                        <div>
+                            <input type="range" name="mandelbrot-saturation" id="mandelbrot-saturation" min="0" max="100" step="1" value="100">
+                        </div>
+                        <div>
+                            <label for="mandelbrot-lightness">Drag slider to change lightness %</label>
+                        </div>
+                        <div>
+                            <input type="range" name="mandelbrot-lightness" id="mandelbrot-lightness" min="0" max="100" step="1" value="50">
+                        </div>
+                        <div>
+                            <input type="submit" value="Go">                            
+                        </div>
+                    </form>
+                </div>
 
-                    <div>
-                        <label for="mandelbrot-hue-multiplier">Crank multiplier up for more rainbow. Tone it down for sad and drab.</label>
-                    </div>
-                    <div>                        
-                        <input type="number" name="mandelbrot-hue-multiplier" id="mandelbrot-hue-multiplier" value="1" step="1">
-                    </div>
-
-                    <div>
-                        <label for="mandelbrot-hue-shift">Drag slider to shift the color around. Good for when you want better contrast.</label>
-                    </div>
-                    <div>
-                        <input type="range" name="mandelbrot-hue-shift" id="mandelbrot-hue-shift" min="0" max="360" step="1" value="1">
-                    </div>
-
-                        <label for="mandelbrot-saturation">Drag slider to change saturation %</label>
-                    </div>
-                    <div>
-                        <input type="range" name="mandelbrot-saturation" id="mandelbrot-saturation" min="0" max="100" step="1" value="100">
-                    </div>
-
-                        <label for="mandelbrot-lightness">Drag slider to change lightness %</label>
-                    </div>
-                    <div>
-                        <input type="range" name="mandelbrot-lightness" id="mandelbrot-lightness" min="0" max="100" step="1" value="50">
-                    </div>
-                    <input type="submit" value="Go">
-                </form>
+                <div>
+                    <form action="#" id="julia-options-form">
+                        <div>
+                            <label for="julia-max-iterations">Increase iteration number to increase pixel accuracy (less colorful though)</label>
+                        </div>
+                        <div>
+                            <input type="number" name="julia-max-iterations" id="julia-max-iterations" value="100" step="100">
+                        </div>
+    
+                        <div>
+                            <label for="julia-hue-multiplier">Crank multiplier up for more rainbow. Tone it down for sad and drab.</label>
+                        </div>
+                        <div>                        
+                            <input type="number" name="julia-hue-multiplier" id="julia-hue-multiplier" value="1" step="1">
+                        </div>
+    
+                        <div>
+                            <label for="julia-hue-shift">Drag slider to shift the color around. Good for when you want better contrast.</label>
+                        </div>
+                        <div>
+                            <input type="range" name="julia-hue-shift" id="julia-hue-shift" min="0" max="360" step="1" value="1">
+                        </div>
+                        <div>                        
+                            <label for="julia-saturation">Drag slider to change saturation %</label>
+                        </div>
+                        <div>
+                            <input type="range" name="julia-saturation" id="julia-saturation" min="0" max="100" step="1" value="100">
+                        </div>
+                        <div>
+                            <label for="julia-lightness">Drag slider to change lightness %</label>
+                        </div>
+                        <div>
+                            <input type="range" name="julia-lightness" id="julia-lightness" min="0" max="100" step="1" value="50">
+                        </div>
+                        <div>
+                            <input type="submit" value="Go">
+                        </div>
+                    </form>
+                </div>
             </section>
 
         </main>

@@ -19,7 +19,12 @@ body {
 #options-section {
   margin: 2vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+}
+
+#options-section form {
+  display: flex;
+  flex-direction: column;
 }
 
 #mandelbrot-div {

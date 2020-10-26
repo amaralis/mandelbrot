@@ -1,12 +1,12 @@
 import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
 
-const iterationSelector = document.querySelector("#mandelbrot-max-iterations");
-const colorRangeSelector = document.querySelector("#mandelbrot-hue-multiplier");
-const hueShiftSelector = document.querySelector("#mandelbrot-hue-shift");
-const saturationSelector = document.querySelector("#mandelbrot-saturation");
-const lightnessSelector = document.querySelector("#mandelbrot-lightness");
-const form = document.querySelector("#mandelbrot-options-form");
-form.onsubmit = changeOptions;
+const iterationSelectorMandelbrot = document.querySelector("#mandelbrot-max-iterations");
+const colorRangeSelectorMandelbrot = document.querySelector("#mandelbrot-hue-multiplier");
+const hueShiftSelectorMandelbrot = document.querySelector("#mandelbrot-hue-shift");
+const saturationSelectorMandelbrot = document.querySelector("#mandelbrot-saturation");
+const lightnessSelectorMandelbrot = document.querySelector("#mandelbrot-lightness");
+const formMandelbrot = document.querySelector("#mandelbrot-options-form");
+formMandelbrot.onsubmit = changeOptions;
 
 export const canvas = document.querySelector("#mandelbrot");
 const ctx = canvas.getContext("2d");
@@ -21,8 +21,8 @@ let pixels = imgData.data;
 export let maxIterations = 100; // resolution/accuracy
 export let colorMultiplier = 1; // number of times hue can turn around the color wheel
 export let hueShift = 0; // original hue angle on the wheel
-export let saturation = 50;
-export let lightness = 50;
+export let saturation = parseInt(saturationSelectorMandelbrot.value);
+export let lightness = parseInt(lightnessSelectorMandelbrot.value);
 const truePixelCount = pixels.length/4;
 
 // ===================================================================================
@@ -168,10 +168,10 @@ export function populate(){
 
 function changeOptions(e){
     e.preventDefault();
-    maxIterations = parseInt(iterationSelector.value);
-    colorMultiplier = parseInt(colorRangeSelector.value);
-    hueShift = parseInt(hueShiftSelector.value);
-    saturation = parseInt(saturationSelector.value);
-    lightness = parseInt(lightnessSelector.value);
+    maxIterations = parseInt(iterationSelectorMandelbrot.value);
+    colorMultiplier = parseInt(colorRangeSelectorMandelbrot.value);
+    hueShift = parseInt(hueShiftSelectorMandelbrot.value);
+    saturation = parseInt(saturationSelectorMandelbrot.value);
+    lightness = parseInt(lightnessSelectorMandelbrot.value);
     populate();
 }
