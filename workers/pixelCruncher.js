@@ -3,19 +3,6 @@
 self.onmessage = e => {
     let {indexStart, sliceSize, width, maxIterations, colorMultiplier, initialXLeft, initialXRight, initialYTop, initialYBottom} = e.data.messageObj;
     let imgDataArr = new Array(sliceSize);
-
-    // for(let i=0; i<imgDataArr.length; i+=4){
-    //     imgDataArr[i] = 0;
-    //     imgDataArr[i+1] = 0;
-    //     imgDataArr[i+2] = 255;
-    //     imgDataArr[i+3] = 255;
-    // }
-    // for(let i=sliceSize*4/2; i<imgDataArr.length; i+=4){
-    //     imgDataArr[i] = 0;
-    //     imgDataArr[i+1] = 255;
-    //     imgDataArr[i+2] = 0;
-    //     imgDataArr[i+3] = 255;
-    // }
     
     populate(imgDataArr, indexStart);
 
@@ -35,7 +22,6 @@ self.onmessage = e => {
             //console.log(realPt, imaginPt);
             
             let iterations = 0;
-            let z = 0; // for julia sets only; C becomes constant, Z changes
         
             while(iterations<maxIterations){
                 let newReal = realPt*realPt - imaginPt*imaginPt;

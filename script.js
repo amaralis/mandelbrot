@@ -1,4 +1,4 @@
-import { getValueInNewRange, getCoordFromIndex, getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
+import { getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
 
 const iterationSelectorMandelbrot = document.querySelector("#mandelbrot-max-iterations");
 const colorRangeSelectorMandelbrot = document.querySelector("#mandelbrot-hue-multiplier");
@@ -13,14 +13,14 @@ const ctx = canvas.getContext("2d");
 export const width = canvas.width;
 export const height = canvas.height;
 
-let imgData = ctx.getImageData(0, 0, width, height); // ImageData object is an ARRAYBUFFER object
+let imgData = ctx.getImageData(0, 0, width, height);
 let pixels = imgData.data;
 
 /* ========================================================== */
 
 export let maxIterations = 100; // resolution/accuracy
 export let colorMultiplier = 1; // number of times hue can turn around the color wheel
-export let hueShift = 0; // original hue angle on the wheel
+export let hueShift = parseInt(hueShiftSelectorMandelbrot.value); // original hue angle on the wheel
 export let saturation = parseInt(saturationSelectorMandelbrot.value);
 export let lightness = parseInt(lightnessSelectorMandelbrot.value);
 const truePixelCount = pixels.length/4;
@@ -67,19 +67,19 @@ export function populate(){
         workers[i].postMessage({messageObj});
         workers[i].onmessage = res => {
             numResponses++;
-            console.log(res.data);
+            //console.log(res.data);
             imgDataChunkArr[i] = res.data;
-            console.log(imgDataChunkArr);
+            //console.log(imgDataChunkArr);
             //newImgDataArr.set(res.data, sliceSize*4*i);
 
             if(numResponses === numWorkers){
-                console.log("All workers responded");
+                //console.log("All workers responded");
                 //let newImgData = new ImageData(newImgDataArr, width);
                 for(let i=0; i<imgDataChunkArr.length; i++){
                     newImgDataArr = [...newImgDataArr, ...imgDataChunkArr[i]];
-                    console.log(newImgDataArr);
+                    //console.log(newImgDataArr);
                 }    
-                console.log(newImgDataArr);
+                //console.log(newImgDataArr);
 
                 for(let rows = 0; rows < height; rows++){
                     for(let cols = 0; cols < width; cols++){
@@ -99,72 +99,15 @@ export function populate(){
                         }
                     }
                 }
+                //console.log("Mandelbrot image data array: ", newImgDataArr);
+
             }
         }
     }
+
 }
 
 // ===================================================================================
-
-
-// export function populate(){
-    // console.log(imgData.data);
-    // for(let i=0; i<pixels.length; i+=4){ // set/reset all rgba values in canvas
-    //     pixels[i] = 0;
-    //     pixels[i+1] = 0;
-    //     pixels[i+2] = 0;
-    //     pixels[i+3] = 255;
-    // }
-    // console.log(imgData.data);
-    
-    // ctx.putImageData(imgData, 0, 0);
-    // console.log(imgData.data);
-    
-
-//     for(let i=0; i<truePixelCount; i++){
-//         let coords = getCoordFromIndex(i);
-        
-//         let realPt = coords.x; // - value pans the camera left
-//         let imaginPt = coords.y;
-
-//         let originalReal = coords.x; // These need to be saved; they represent C which is constant in mandelbrot's
-//         let originalImagin = coords.y; // These need to be saved; they represent C which is constant in mandelbrot's
-//         //console.log(realPt, imaginPt);
-    
-//         let iterations = 0;
-//         let z = 0; // for julia sets only; C becomes constant, Z changes
-    
-//         while(iterations<maxIterations){
-//             let newReal = realPt*realPt - imaginPt*imaginPt;
-//             let newImaginPt = 2 * realPt * imaginPt;
-    
-//             realPt = newReal + originalReal; 
-//             imaginPt = newImaginPt + originalImagin;
-    
-//             if(realPt+imaginPt > 8){ // Tendency towards infinity
-//                 break;
-//             }
-//             iterations++;
-//         }
-    
-//         let lightness = getValueInNewRange(iterations, 0, maxIterations, 0, 255);
-    
-//         if(iterations >= maxIterations){
-//             lightness = 0;
-//         } else {
-//             // i is already divided by four, so we need to multiply again, to get only the red index in the image data array
-//             pixels[getIndexFromCoord(coords.xOriginal,coords.yOriginal)*4] = lightness;
-//             pixels[getIndexFromCoord(coords.xOriginal,coords.yOriginal)*4+1] = lightness-60;
-//             pixels[getIndexFromCoord(coords.xOriginal,coords.yOriginal)*4+2] = lightness+60;
-//             pixels[getIndexFromCoord(coords.xOriginal,coords.yOriginal)*4+3] = 255;
-//             ctx.putImageData(imgData, 0, 0);
-//         }
-//     }
-
-//     //maxIterations += 1000;
-// }
-
-//populate();
 
 function changeOptions(e){
     e.preventDefault();

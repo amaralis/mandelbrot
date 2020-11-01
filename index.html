@@ -9,15 +9,15 @@
     <body>
         <main>
             <section id="canvas-section">
-                <div id="mandelbrot-div">
+                <div class="img-div">
                     <div id="mandelbrot-coords-div">
-                        <p>X: <span id="x-coord-span"></span> Y: <span id="y-coord-span"></span></p>
+                        <p>X: <span id="x-coord-span-mandelbrot"></span> Y: <span id="y-coord-span-mandelbrot"></span></p>
                     </div>
                     <canvas id="mandelbrot" height="600" width="600"></canvas>
                 </div>
-                <div class="julia-div">
-                    <div id="mandelbrot-coords-div">
-                        <p>X: <span id="x-coord-span"></span> Y: <span id="y-coord-span"></span></p>
+                <div class="img-div">
+                    <div id="julia-coords-div">
+                        <p>X: <span id="x-coord-span-julia"></span> Y: <span id="y-coord-span-julia"></span></p>
                     </div>
                     <canvas id="julia" height="600" width="600"></canvas>
                 </div>
@@ -43,7 +43,7 @@
                             <label for="mandelbrot-hue-shift">Drag slider to shift the color around. Good for when you want better contrast.</label>
                         </div>
                         <div>
-                            <input type="range" name="mandelbrot-hue-shift" id="mandelbrot-hue-shift" min="0" max="360" step="1" value="1">
+                            <input type="range" name="mandelbrot-hue-shift" id="mandelbrot-hue-shift" min="0" max="360" step="1" value="60">
                         </div>
                         <div>
                             <label for="mandelbrot-saturation">Drag slider to change saturation %</label>
@@ -106,5 +106,6 @@
 
         </main>
         <script src="script.js" type="module"></script>
+        <script src="julia.js" type="module"></script>
     </body>
 </html>

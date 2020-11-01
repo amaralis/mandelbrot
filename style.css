@@ -27,7 +27,7 @@ body {
   flex-direction: column;
 }
 
-#mandelbrot-div {
+.img-div {
   width: 50vw;
   display: flex;
   flex-direction: column;

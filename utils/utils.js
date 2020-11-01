@@ -1,8 +1,17 @@
 import { canvas, width, height, workers, populate } from "../script.js";
-const xCoordSpan = document.querySelector("#x-coord-span");
-const yCoordSpan = document.querySelector("#y-coord-span");
+import { canvasJulia, populateJulia } from "../julia.js";
+
+const xCoordSpan = document.querySelector("#x-coord-span-mandelbrot");
+const yCoordSpan = document.querySelector("#y-coord-span-mandelbrot");
+
+const xCoordSpanJulia = document.querySelector("#x-coord-span-julia");
+const yCoordSpanJulia = document.querySelector("#y-coord-span-julia");
 
 export let zoomFactor = 2;
+
+// Mandelbrot coords for corresponding Julia set
+export let coordXMandelbrot = 0;
+export let coordYMandelbrot = 0;
 
 // These variables represent the side limits of the canvas: left, right, top, and bottom
 export let initialXLeft = -2.5;
@@ -55,39 +64,35 @@ export function zoom(x,y){
     initialYTop = convertedY - topToBottom / 2;
     initialYBottom = convertedY + topToBottom / 2;
 
-    console.log(x,y,convertedX,convertedY);
+    //console.log(x,y,convertedX,convertedY);
     //console.log(sideToSide, topToBottom);
     populate();
     // console.log(convertedX, convertedY, xDiff, yDiff);
 }
 
-// export function pan(x,y){
-//     let convertedX = getValueInNewRange(x, 0, width, initialXLeft, initialXRight);
-//     let convertedY = getValueInNewRange(y, 0, height, initialYTop, initialYBottom);
-
-//     // Apply new canvas edge coords (in each direction, half of the difference between opposite sides)
-//     initialXLeft = convertedX - sideToSide / 2;
-//     initialXRight = convertedX + sideToSide / 2;
-//     initialYTop = convertedY - topToBottom / 2;
-//     initialYBottom = convertedY + topToBottom / 2;
-//     populate();
-// }
-
-
-window.onload = () => {    
+window.onload = () => {
+    canvas.addEventListener("dblclick", e => {
+        let xCoord = e.clientX - canvas.offsetLeft;
+        let yCoord = e.clientY - canvas.offsetTop;
+        
+        console.log("Util ", xCoord, yCoord)
+        zoom(xCoord, yCoord);
+    })
     canvas.addEventListener("click", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.clientY - canvas.offsetTop;
         
-        zoom(xCoord, yCoord);
-    })
-
-// canvas.addEventListener("click", e => {
-//         let xCoord = e.clientX - canvas.offsetLeft;
-//         let yCoord = e.clientY - canvas.offsetTop;
+        let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
+        let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
         
-//         pan(xCoord, yCoord);
-//     })
+        coordXMandelbrot = newX;
+        coordYMandelbrot = newY;
+
+        xCoordSpanJulia.textContent = `${newX}, ${xCoord}`;
+        yCoordSpanJulia.textContent = `${newY}, ${yCoord}`;
+
+        populateJulia();
+    })
     
     canvas.addEventListener("mousemove", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
