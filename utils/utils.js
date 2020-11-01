@@ -75,7 +75,6 @@ window.onload = () => {
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.clientY - canvas.offsetTop;
         
-        console.log("Util ", xCoord, yCoord)
         zoom(xCoord, yCoord);
     })
     canvas.addEventListener("click", e => {

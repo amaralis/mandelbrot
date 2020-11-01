@@ -7,7 +7,7 @@ const hueShiftSelector = document.querySelector("#julia-hue-shift");
 const saturationSelector = document.querySelector("#julia-saturation");
 const lightnessSelector = document.querySelector("#julia-lightness");
 const form = document.querySelector("#julia-options-form");
-//form.onsubmit = changeOptions;
+form.onsubmit = changeOptions;
 
 const canvas = document.querySelector("#julia");
 const ctx = canvas.getContext("2d");
@@ -85,5 +85,16 @@ export function populateJulia() {
         }
     }
 }
+
+function changeOptions(e){
+    e.preventDefault();
+    maxIterations = parseInt(iterationSelector.value);
+    colorMultiplier = parseInt(colorRangeSelector.value);
+    hueShift = parseInt(hueShiftSelector.value);
+    saturation = parseInt(saturationSelector.value);
+    lightness = parseInt(lightnessSelector.value);
+    populateJulia();
+}
+
 
 export {canvas as canvasJulia};
