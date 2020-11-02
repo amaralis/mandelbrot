@@ -72,14 +72,21 @@ export function zoom(x,y){
 
 window.onload = () => {
     canvas.addEventListener("dblclick", e => {
+        // let xCoord = e.clientX - canvas.offsetLeft;
+        // let yCoord = e.clientY - canvas.offsetTop;
         let xCoord = e.clientX - canvas.offsetLeft;
-        let yCoord = e.clientY - canvas.offsetTop;
+        let yCoord = e.pageY;
         
         zoom(xCoord, yCoord);
     })
     canvas.addEventListener("click", e => {
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.clientY - canvas.offsetTop;
+        // let xCoord = e.clientX - canvas.offsetLeft;
+        // let yCoord = e.pageY;
+
+        // console.log(e.clientY, canvas.offsetTop);
+        // console.log(e.pageY);
         
         let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
         let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
@@ -94,8 +101,10 @@ window.onload = () => {
     })
     
     canvas.addEventListener("mousemove", e => {
+        // let xCoord = e.clientX - canvas.offsetLeft;
+        // let yCoord = e.clientY - canvas.offsetTop;
         let xCoord = e.clientX - canvas.offsetLeft;
-        let yCoord = e.clientY - canvas.offsetTop;
+        let yCoord = e.pageY;
 
         let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
         let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
