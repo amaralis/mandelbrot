@@ -1,0 +1,32 @@
+#options-section form input[type="number"] {
+  padding: 0.5em;
+  border-radius: 2em;
+  background-color: #ccc;
+  font-size: 1.2rem;
+}
+
+#options-section form input {
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+}
+
+#options-section form label {
+  font-size: 1.3rem;
+}
+
+#options-section form input[type="range"] {
+  width: 50%;
+}
+
+#options-section form input[type="submit"] {
+  padding: 1rem;
+  width: 20%;
+  font-size: 2rem;
+  border-radius: 2rem;
+}
+
+form {
+  border: 1px solid red;
+  padding: 1.6em;
+}

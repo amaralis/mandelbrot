@@ -22,12 +22,14 @@ body {
   margin: 2vh;
   display: flex;
   justify-content: center;
+  border: 1px solid red;
 }
 
 #options-section {
   margin: 2vh;
   display: flex;
   justify-content: space-around;
+  border: 1px solid red;
 }
 
 #options-section form {
@@ -40,4 +42,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid red;
+  padding: 1.6em;
+  font-size: 1.3rem;
+}
+
+.img-div p {
+  margin-bottom: 1rem;
+  color: green;
+}
+
+.img-div span {
+  color: #ccc;
 }
