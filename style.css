@@ -10,6 +10,14 @@ body {
   color: #ccc;
 }
 
+#instructions {
+  padding: 1em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 2rem;
+  text-align: center;
+}
+
 #canvas-section {
   margin: 2vh;
   display: flex;
