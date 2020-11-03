@@ -22,14 +22,12 @@ body {
   margin: 2vh;
   display: flex;
   justify-content: center;
-  border: 1px solid red;
 }
 
 #options-section {
   margin: 2vh;
   display: flex;
   justify-content: space-around;
-  border: 1px solid red;
 }
 
 #options-section form {
