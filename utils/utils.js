@@ -1,5 +1,5 @@
 import { canvas, width, height, workers, populate } from "../script.js";
-import { canvasJulia, populateJulia } from "../julia.js";
+import { populateJulia } from "../julia.js";
 
 const xCoordSpan = document.querySelector("#x-coord-span-mandelbrot");
 const yCoordSpan = document.querySelector("#y-coord-span-mandelbrot");
@@ -41,8 +41,8 @@ export function getCoordFromIndex(index) { // From full image data index / 4, or
     let xBefore = Math.round(index % width);
     let yBefore = Math.round(index / width) - 1;
 
-    let x = getValueInNewRange(xBefore, 0, width, initialXLeft, initialXRight); // -2.5,1.5 (total difference must be same as other axis, to maintain proportions)
-    let y = getValueInNewRange(yBefore, 0, width, initialYTop, initialYBottom);  // -2,2 (total difference must be same as other axis, to maintain proportions)
+    let x = getValueInNewRange(xBefore, 0, width, initialXLeft, initialXRight); // Total difference between left and right values must be same as other axis, to maintain proportions
+    let y = getValueInNewRange(yBefore, 0, width, initialYTop, initialYBottom);  // Total difference between left and right values must be same as other axis, to maintain proportions
 
     return {x: x, y: y, xOriginal: xBefore, yOriginal: yBefore};
 }
@@ -64,29 +64,19 @@ export function zoom(x,y){
     initialYTop = convertedY - topToBottom / 2;
     initialYBottom = convertedY + topToBottom / 2;
 
-    //console.log(x,y,convertedX,convertedY);
-    //console.log(sideToSide, topToBottom);
     populate();
-    // console.log(convertedX, convertedY, xDiff, yDiff);
 }
 
 window.onload = () => {
     canvas.addEventListener("dblclick", e => {
-        // let xCoord = e.clientX - canvas.offsetLeft;
-        // let yCoord = e.clientY - canvas.offsetTop;
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.pageY - canvas.offsetTop;
         
         zoom(xCoord, yCoord);
     })
     canvas.addEventListener("click", e => {
-        let xCoord = e.clientX - canvas.offsetLeft;
+        let xCoord = e.clientX - canvas.offsetLeft; // This can probably be pageX, too. Just not clientY
         let yCoord = e.pageY - canvas.offsetTop;
-        // let xCoord = e.clientX - canvas.offsetLeft;
-        // let yCoord = e.pageY;
-
-        // console.log(e.clientY, canvas.offsetTop);
-        // console.log(e.pageY);
         
         let newX = getValueInNewRange(xCoord, 0, width, initialXLeft, initialXRight);
         let newY = getValueInNewRange(yCoord, 0, width, initialYTop, initialYBottom);
@@ -101,8 +91,6 @@ window.onload = () => {
     })
     
     canvas.addEventListener("mousemove", e => {
-        // let xCoord = e.clientX - canvas.offsetLeft;
-        // let yCoord = e.clientY - canvas.offsetTop;
         let xCoord = e.clientX - canvas.offsetLeft;
         let yCoord = e.pageY;
 
