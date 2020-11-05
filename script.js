@@ -34,7 +34,7 @@ if(window.Worker){
 }
 
 export function populate(){    
-    // One logical core is going to have the main thread running in it, right? Yup...
+    // One logical core is going to have the main thread running in it, right?
     const numWorkers = navigator.hardwareConcurrency - 1;
     let workIterator = 0;
     let numResponses = 0;
@@ -44,6 +44,7 @@ export function populate(){
         workIterator++;
     }
 
+    // Divvy up the image into chunks depending on number of workers
     let imgDataChunkArr = new Array(numWorkers);
     let sliceSize = truePixelCount / numWorkers;
 
@@ -67,25 +68,15 @@ export function populate(){
         workers[i].postMessage({messageObj});
         workers[i].onmessage = res => {
             numResponses++;
-            //console.log(res.data);
             imgDataChunkArr[i] = res.data;
-            //console.log(imgDataChunkArr);
-            //newImgDataArr.set(res.data, sliceSize*4*i);
 
             if(numResponses === numWorkers){
-                //console.log("All workers responded");
-                //let newImgData = new ImageData(newImgDataArr, width);
                 for(let i=0; i<imgDataChunkArr.length; i++){
                     newImgDataArr = [...newImgDataArr, ...imgDataChunkArr[i]];
-                    //console.log(newImgDataArr);
-                }    
-                //console.log(newImgDataArr);
+                }
 
                 for(let rows = 0; rows < height; rows++){
                     for(let cols = 0; cols < width; cols++){
-                        // if(rows === 0 && cols === 599){
-                        //     console.log(getIndexFromCoord(cols, rows));
-                        // }
                         let index = getIndexFromCoord(cols, rows);
                         let hue = Math.round(newImgDataArr[index]);
 
@@ -94,13 +85,10 @@ export function populate(){
                             ctx.fillRect(cols, rows, 1, 1);
                         } else {
                             ctx.fillStyle = `hsl(${hue+hueShift}, ${saturation}%, ${lightness}%)`;
-                            //ctx.clearRect(rows, cols, 1, 1);
                             ctx.fillRect(cols, rows, 1, 1);
                         }
                     }
                 }
-                //console.log("Mandelbrot image data array: ", newImgDataArr);
-
             }
         }
     }

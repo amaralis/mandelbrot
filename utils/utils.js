@@ -33,7 +33,7 @@ export function getValueInNewRange(oldValue, oldMin, oldMax, newMin, newMax) {
     const oldRange = oldMax - oldMin;
     const newRange = newMax - newMin;
     const newValue = (((oldValue - oldMin) * newRange) / oldRange) + newMin;
-    // console.log(oldValue, newValue, oldRange, newRange);
+
     return newValue;
 }
 
@@ -42,7 +42,7 @@ export function getCoordFromIndex(index) { // From full image data index / 4, or
     let yBefore = Math.round(index / width) - 1;
 
     let x = getValueInNewRange(xBefore, 0, width, initialXLeft, initialXRight); // Total difference between left and right values must be same as other axis, to maintain proportions
-    let y = getValueInNewRange(yBefore, 0, width, initialYTop, initialYBottom);  // Total difference between left and right values must be same as other axis, to maintain proportions
+    let y = getValueInNewRange(yBefore, 0, width, initialYTop, initialYBottom);  // Total difference between top and bottom values must be same as other axis, to maintain proportions
 
     return {x: x, y: y, xOriginal: xBefore, yOriginal: yBefore};
 }
@@ -58,7 +58,7 @@ export function zoom(x,y){
     sideToSide /= zoomFactor;
     topToBottom /= zoomFactor;
 
-    // Apply zoom (in each direction, half of the difference between opposite sides)
+    // Apply zoom (in each direction, half of the distance between opposite sides)
     initialXLeft = convertedX - sideToSide / 2;
     initialXRight = convertedX + sideToSide / 2;
     initialYTop = convertedY - topToBottom / 2;
