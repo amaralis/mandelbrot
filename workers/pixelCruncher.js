@@ -26,7 +26,7 @@ self.onmessage = e => {
                 realPt = newReal + originalReal; 
                 imaginPt = newImaginPt + originalImagin;
         
-                if(realPt+imaginPt > 8){ // Tendency towards infinity
+                if(realPt*realPt+imaginPt*imaginPt > 8){ // Tendency towards infinity
                     break;
                 }
                 iterations++;
