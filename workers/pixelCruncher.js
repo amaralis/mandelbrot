@@ -25,10 +25,17 @@ self.onmessage = e => {
         
                 realPt = newReal + originalReal; 
                 imaginPt = newImaginPt + originalImagin;
-        
-                if(realPt*realPt+imaginPt*imaginPt > 8){ // Tendency towards infinity
+
+                // if (realPt*realPt + imaginPt*imaginPt > 8) { // Tendency towards infinity; experimental; needs work
+                //     let delta = log(log(sqrt(realPt*realPt + imaginPt*imaginPt)))/log(2);
+                //     hue = ((iterations - delta)/colorMultiplier) % 360;
+                //     break;
+                // }
+
+                if (realPt*realPt + imaginPt*imaginPt > 8) { // Tendency towards infinity
                     break;
                 }
+
                 iterations++;
             }
             
