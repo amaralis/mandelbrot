@@ -46,7 +46,7 @@ export function populate(){
 
     // Divvy up the image into chunks depending on number of workers
     let imgDataChunkArr = new Array(numWorkers);
-    let sliceSize = truePixelCount / numWorkers;
+    let sliceSize = Math.round(truePixelCount / numWorkers);
 
     let newImgDataArr = [];
 
