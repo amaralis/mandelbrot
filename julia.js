@@ -40,7 +40,7 @@ export function populateJulia() {
             realPt = newReal + coordXMandelbrot; // This is where the julia set differs from the mandelbrot set
             imaginPt = newImaginPt + coordYMandelbrot; // This is where the julia set differs from the mandelbrot set
             
-            if(realPt*realPt+imaginPt*imaginPt > 8){ // Tendency towards infinity
+            if(realPt + imaginPt > 8){ // Tendency towards infinity
                 break;
             }
     

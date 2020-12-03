@@ -35,7 +35,7 @@ if(window.Worker){
 
 export function populate(){    
     // One logical core is going to have the main thread running in it, right?
-    const numWorkers = navigator.hardwareConcurrency - 1;
+    const numWorkers = Math.floor(navigator.hardwareConcurrency - 1);
     let workIterator = 0;
     let numResponses = 0;
 

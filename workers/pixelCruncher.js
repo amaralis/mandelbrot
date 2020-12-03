@@ -32,7 +32,7 @@ self.onmessage = e => {
                 //     break;
                 // }
 
-                if (realPt*realPt + imaginPt*imaginPt > 8) { // Tendency towards infinity
+                if (realPt + imaginPt > 8) { // Tendency towards infinity
                     break;
                 }
 
