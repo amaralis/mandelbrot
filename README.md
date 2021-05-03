@@ -4,8 +4,8 @@ Explore the Mandelbrot and Julia sets with your mouse. That's... pretty much it.
 
 [Live website](https://amaralis.github.io/mandelbrot/)
 
-<img src="screenshots/ss1.png" width="50%">
-<img src="screenshots/ss2.png" width="50%">
+<img src="screenshots/ss1.png" width="49%">
+<img src="screenshots/ss2.png" width="49%">
 
 ## How to use
 
