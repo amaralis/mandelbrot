@@ -5,6 +5,7 @@ Explore the Mandelbrot and Julia sets with your mouse. That's... pretty much it.
 [Live website](https://amaralis.github.io/mandelbrot/)
 
 | ![Fractals](screenshots/ss1.png) | ![Controls](screenshots/ss2.png) |
+| --- | --- |
 
 ## How to use
 
