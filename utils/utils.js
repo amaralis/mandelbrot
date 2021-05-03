@@ -1,4 +1,4 @@
-import { canvas, width, height, workers, populate } from "../script.js";
+import { canvas, width, height, workers, populate, numWorkers } from "../script.js";
 import { populateJulia } from "../julia.js";
 
 const xCoordSpan = document.querySelector("#x-coord-span-mandelbrot");
@@ -102,6 +102,12 @@ window.onload = () => {
     })
 }
 
-export function createWorker(file){
-    workers.push(new Worker(file));
+export function createWorkers(file){
+    if(workers.length !== numWorkers){
+        let workIterator = 0;
+        while(workIterator !== numWorkers){
+            workers.push(new Worker(file));
+            workIterator++;
+        }
+    }
 }

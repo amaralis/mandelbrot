@@ -1,4 +1,4 @@
-import { getIndexFromCoord, createWorker, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
+import { getIndexFromCoord, createWorkers, initialXLeft, initialXRight, initialYTop, initialYBottom } from "./utils/utils.js";
 
 const iterationSelectorMandelbrot = document.querySelector("#mandelbrot-max-iterations");
 const colorRangeSelectorMandelbrot = document.querySelector("#mandelbrot-hue-multiplier");
@@ -27,26 +27,28 @@ const truePixelCount = pixels.length/4;
 
 // ===================================================================================
 
+// One logical core is going to have the main thread running in it, right?
+export const numWorkers = Math.floor(navigator.hardwareConcurrency - 1);
+
 export let workers = [];
 
+// Set minimum amount of image slices
+let sliceSize = 1;
+
 if(window.Worker){
+    // Set number of image slices only if workers are available
+    createWorkers("workers/pixelCruncher.js");
+    sliceSize = Math.round(truePixelCount / numWorkers);
     populate();
+} else {
+    console.log("This application needs more than one cpu core to run")
 }
 
-export function populate(){    
-    // One logical core is going to have the main thread running in it, right?
-    const numWorkers = Math.floor(navigator.hardwareConcurrency - 1);
-    let workIterator = 0;
+export function populate(){
     let numResponses = 0;
-
-    while(workIterator !== numWorkers){
-        createWorker("workers/pixelCruncher.js");
-        workIterator++;
-    }
 
     // Divvy up the image into chunks depending on number of workers
     let imgDataChunkArr = new Array(numWorkers);
-    let sliceSize = Math.round(truePixelCount / numWorkers);
 
     let newImgDataArr = [];
 
